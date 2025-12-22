@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vesper - 在线聊天室</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+<div class="page-wrapper">
+    <section id="login-container" class="panel auth-panel-container">
+        <div class="jelly-title" style="font-size:40px;">Vesper</div>
+        <!-- 左侧果冻区 -->
+        <div id="welcome-panel" class="welcome-panel">
+            <canvas id="jelly-canvas"></canvas>
+        </div>
+        <!-- 在canvas容器附近添加句子滚动容器 -->
+        <div class="jelly-slogan-container">
+        <div class="jelly-slogan">
+            <div>have a nice day</div>
+            <div>link now,explore more</div>
+            <div>nice to meet you</div>
+            <div>have a nice day</div>
+            <div>link now,explore more</div>
+            <div>nice to meet you</div>
+        </div>
+        </div>
+        
+        <section id="login-panel" class="login-panel">
+            <div class="auth-header">
+                <p class="eyebrow">Vesper Chat</p>
+                <h1>捕捉思维的每一次共鸣</h1>
+                <p class="muted">虚实共生的沉浸式对话空间</p>
+            </div>
+            <form id="login-form" class="card auth-card">
+                <label class="field">
+                    <span>用户名</span>
+                    <input type="text" id="login-username" placeholder="请输入用户名" required>
+                </label>
+                <label class="field">
+                    <span>密码</span>
+                    <input type="password" id="login-password" placeholder="请输入密码" required>
+                </label>
+                <div class="form-row">
+                    <button type="submit" class="primary-btn">登录</button>
+                    <button type="button" id="register-btn" class="ghost-btn">注册</button>
+                </div>
+                <p id="login-hint" class="hint"></p>
+            </form>
+        </section>
+    </section>
+
+    <section id="chat-panel" class="panel chat-panel hidden">
+        <div class="vscode-sidebar">
+            <button class="sidebar-icon" data-view="friends" title="好友">
+                <i data-lucide="users"></i>
+            </button>
+            <button class="sidebar-icon" data-view="rooms" title="房间">
+                <i data-lucide="messages-square"></i>
+            </button>
+            <button class="sidebar-icon" data-view="treehole" title="树洞">
+                <i data-lucide="pen-tool"></i>
+            </button>
+            <button class="sidebar-icon" data-view="moments" title="朋友圈">
+                <i data-lucide="images"></i>
+            </button>
+            <button class="sidebar-icon" data-view="ai-clones" title="AI 分身">
+                <i data-lucide="bot"></i>
+            </button>
+        </div>
+
+        <div id="post-login-welcome" class="post-login-welcome">
+            <div class="welcome-container">
+                <div class="welcome-text">
+                    <span class="letter">W</span>
+                    <span class="letter">E</span>
+                    <span class="letter">L</span>
+                    <span class="letter">C</span>
+                    <span class="letter">O</span>
+                    <span class="letter">M</span>
+                    <span class="letter">E</span>
+                </div>
+                <p class="welcome-desc">选择左侧功能开始使用</p>
+                <div class="welcome-bg"></div>
+            </div>
+        </div>
+
+        <!-- add:把你们都藏起来喵 -->
+        <div id="chat-content" class="chat-content hidden">
+            
+            <aside class="sidebar">
+                <!-- add:hidden -->
+                <div class="profile-card hidden">
+                    <div class="profile-main">
+                        <img id="current-avatar" class="avatar" src="https://2bpic.oss-cn-beijing.aliyuncs.com/2025/12/04/6930f7a2c12fc.png" alt="avatar">
+                        <div>
+                            <p class="eyebrow">当前用户</p>
+                            <h3 id="current-name">未登录</h3>
+                            <p id="current-signature" class="muted">请先登录</p>
+                        </div>
+                    </div>
+                    <div class="profile-settings">
+                        <button id="settings-btn" class="icon-btn" type="button" aria-label="用户设置">
+                            <i data-lucide="settings"></i>
+                        </button>
+                        <div id="settings-menu" class="dropdown-menu profile-menu hidden">
+                            <button id="edit-profile-btn" class="dropdown-item" type="button">
+                                <i data-lucide="pencil"></i>
+                                <span>编辑资料</span>
+                            </button>
+                            <button id="logout-btn" class="dropdown-item danger" type="button">
+                                <i data-lucide="log-out"></i>
+                                <span>退出登录</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sidebar-content">
+                    <!-- add:hidden -->
+                    <div class="sidebar-section hidden" data-section="friends">
+                        <div class="section-header">
+                            <div class="section-title">
+                                <i data-lucide="users"></i>
+                                <h4>好友</h4>
+                            </div>
+                            <div class="section-actions">
+                                <button id="refresh-friends" class="icon-btn" title="刷新好友" type="button">
+                                    <i data-lucide="refresh-ccw"></i>
+                                </button>
+                                <button class="icon-btn collapse-btn" data-collapse-target="friends" aria-expanded="true" type="button" aria-label="折叠/展开好友列表" title="折叠/展开好友列表">
+                                    <i data-lucide="chevron-up"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="section-body" data-collapse-body="friends">
+                            <div class="search-row">
+                                <input type="text" id="friend-keyword" placeholder="搜索用户名或昵称">
+                                <button id="friend-search-btn" class="ghost-btn iconed" type="button">
+                                    <i data-lucide="search"></i>
+                                    <span>搜索</span>
+                                </button>
+                            </div>
+                            <ul id="friend-search-result" class="list muted"></ul>
+                            <div class="sub-section-header">
+                                <h5>好友请求</h5>
+                                <button id="refresh-friend-requests" class="icon-btn small" title="刷新请求" type="button">
+                                    <i data-lucide="refresh-cw"></i>
+                                </button>
+                            </div>
+                            <ul id="friend-request-list" class="list muted"></ul>
+                            <div class="sub-section-header">
+                                <h5>我的好友</h5>
+                            </div>
+                            <ul id="friend-list" class="list"></ul>
+                        </div>
+                    </div>
+                    <!-- add:hidden -->
+                    <div class="sidebar-section hidden" data-section="rooms">
+                        <div class="section-header">
+                            <div class="section-title">
+                                <i data-lucide="messages-square"></i>
+                                <h4>房间</h4>
+                            </div>
+                            <div class="section-actions">
+                                <button id="open-room-modal" class="icon-btn" title="创建房间" type="button">
+                                    <i data-lucide="plus"></i>
+                                </button>
+                                <button class="icon-btn collapse-btn" data-collapse-target="rooms" aria-expanded="true" type="button" aria-label="折叠/展开房间列表" title="折叠/展开房间列表">
+                                    <i data-lucide="chevron-up"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="section-body" data-collapse-body="rooms">
+                            <div class="search-row">
+                                <input type="text" id="room-search-keyword" placeholder="搜索群聊">
+                                <button id="room-search-btn" class="ghost-btn iconed" type="button">
+                                    <i data-lucide="search"></i>
+                                    <span>搜索</span>
+                                </button>
+                            </div>
+                            <ul id="room-search-result" class="list muted"></ul>
+                            <div class="sub-section-header">
+                                <h5>我的房间</h5>
+                            </div>
+                            <ul id="room-list" class="list"></ul>
+                        </div>
+                    </div>
+                    <div class="sidebar-section hidden" data-section="ai-clones">
+                        <div class="section-header">
+                            <div class="section-title">
+                                <i data-lucide="bot"></i>
+                                <h4>AI 分身</h4>
+                            </div>
+                            <div class="section-actions">
+                                <button id="open-ai-clone-modal" class="icon-btn" title="发布分身" type="button">
+                                    <i data-lucide="plus"></i>
+                                </button>
+                                <button id="refresh-ai-clones" class="icon-btn" title="刷新分身" type="button">
+                                    <i data-lucide="refresh-ccw"></i>
+                                </button>
+                                <button class="icon-btn collapse-btn" data-collapse-target="ai-clones" aria-expanded="true" type="button" aria-label="折叠/展开AI分身列表" title="折叠/展开AI分身列表">
+                                    <i data-lucide="chevron-up"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="section-body" data-collapse-body="ai-clones">
+                            <div class="sub-section-header">
+                                <h5>我的分身</h5>
+                            </div>
+                            <ul id="ai-clone-mine" class="list"></ul>
+                            <div class="sub-section-header">
+                                <h5>AI 分身广场</h5>
+                            </div>
+                            <ul id="ai-clone-all" class="list"></ul>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+
+            <main class="chat-area">
+                <header class="chat-header">
+                    <div>
+                        <div class="mode-toggle">
+                        </div>
+                        <!-- <p class="eyebrow">聊天</p> -->
+                        <h2 id="chat-title">请选择聊天对象</h2>
+                        <p id="chat-subtitle" class="muted">还没有打开任何房间</p>
+                    </div>
+                    <div class="chat-actions">
+<!-- add -->
+                        <button id="manage-room-btn" class="ghost-btn iconed hidden" type="button" title="群管理">
+                            <i data-lucide="settings-2"></i>
+                            <span>群管理</span>
+                        </button>
+
+                        <button id="close-chat-btn" class="icon-btn" title="关闭聊天" type="button">
+                            <i data-lucide="x"></i>
+                        </button>
+                        <div class="dropdown">
+                            <button id="game-btn" class="ghost-btn iconed" type="button">
+                                <i data-lucide="gamepad-2"></i>
+                                <span>游戏</span>
+                            </button>
+                            <div id="game-menu" class="dropdown-menu hidden">
+                                <button class="dropdown-item" data-game="TOMATO" type="button">
+                                    <i data-lucide="bomb"></i>
+                                    <span>扔番茄</span>
+                                </button>
+                                <button class="dropdown-item" data-game="DICE" type="button">
+                                    <i data-lucide="dice-3"></i>
+                                    <span>掷骰子</span>
+                                </button>
+                                <button class="dropdown-item" data-game="RPS" type="button">
+                                    <i data-lucide="hand"></i>
+                                    <span>猜拳</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </header>
+
+                <div id="ai-welcome-placeholder" class="empty-chat-container hidden">
+                    <div class="empty-chat-img robot-glow">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" style="width: 100%; height: 100%; color: var(--accent);">
+                            <rect x="3" y="11" width="18" height="10" rx="2"></rect>
+                            <circle cx="12" cy="5" r="2"></circle>
+                            <path d="M12 7v4"></path>
+                            <line x1="8" y1="16" x2="8" y2="16"></line>
+                            <line x1="16" y1="16" x2="16" y2="16"></line>
+                        </svg>
+                    </div>
+                    <div class="empty-chat-title">AI 分身广场</div>
+                    <div class="empty-chat-desc">这里是 AI 的聚集地<br>点击左侧列表，与智能分身开启对话</div>
+                </div>
+
+                
+                <section id="chat-section">
+                    <section id="message-list" class="message-list"></section>
+
+                    <form id="message-form" class="message-form">
+                        <div id="quote-preview" class="quote-preview hidden">
+                            <div class="quote-preview-text">
+                                <div class="quote-title">
+                                    <span class="quote-label">引用</span>
+                                    <span id="quote-sender" class="quote-sender"></span>
+                                </div>
+                                <p id="quote-text" class="quote-text"></p>
+                            </div>
+                            <button type="button" id="quote-clear-btn" class="icon-btn small" title="清除引用">
+                                <i data-lucide="x"></i>
+                            </button>
+                        </div>
+                        <div class="input-shell">
+                            <div class="input-actions">
+                                <button type="button" id="send-file-btn" class="icon-btn" title="发送文件">
+                                    <i data-lucide="paperclip"></i>
+                                </button>
+                                <input id="file-input" type="file" class="hidden" aria-label="选择文件" title="选择文件">
+                                <button type="button" id="emoji-btn" class="icon-btn" title="选择表情">
+                                    <i data-lucide="smile"></i>
+                                </button>
+                            </div>
+                            <textarea id="message-input" placeholder="输入消息，支持 Emoji" rows="2"></textarea>
+                        </div>
+                        <label class="burn-toggle">
+                            <input type="checkbox" id="burn-mode-toggle">
+                            <span>阅后即焚模式</span>
+                        </label>
+                        <button type="submit" class="primary-btn">发送</button>
+                    </form>
+                </section>
+
+                <div id="moments-panel" class="moments-panel hidden">
+
+                    <div id="moments-list" class="moments-list"></div>
+                    <form id="moment-form" class="message-form moment-form">
+                        <div class="input-shell">
+                            <textarea id="moment-input" placeholder="分享此刻的想法..." rows="2"></textarea>
+                        </div>
+                        <div class="moment-upload-row">
+                            <div class="moment-upload-actions">
+                                <button type="button" id="moment-upload-btn" class="ghost-btn iconed">
+                                    <i data-lucide="image-plus"></i>
+                                    <span>添加图片</span>
+                                </button>
+                                <span class="muted" id="moment-upload-hint">最多 9 张</span>
+                            </div>
+                            <input type="file" id="moment-upload-input" class="hidden" accept="image/*" multiple>
+                            <div id="moment-upload-preview" class="moment-preview-grid"></div>
+                        </div>
+                        <button type="submit" class="primary-btn">发布动态</button>
+                    </form>
+                </div>
+
+                <section id="tree-hole-section" class="hidden">
+                    <div id="tree-hole-list" class="tree-hole-list"></div>
+                    <form id="tree-hole-form" class="message-form">
+                        <div class="input-shell">
+                            <textarea id="tree-hole-input" placeholder="想悄悄说点什么？这里可以匿名倾诉" rows="2"></textarea>
+                        
+                        </div>
+                        <button type="submit" class="primary-btn">匿名发布</button>
+                    </form>
+                </section>
+            </main>
+        </div>
+        <!-- add:结束喵 -->
+    </section>
+</div>
+
+<div id="room-modal" class="modal hidden">
+    <div class="modal-content">
+        <h3>创建新的群聊</h3>
+        <label>群聊名称
+            <input type="text" id="room-name" placeholder="例如：项目讨论群">
+        </label>
+        <div id="room-members" class="checkbox-group"></div>
+        <div class="modal-actions">
+            <button id="create-room-confirm" class="primary-btn" type="button">创建</button>
+            <button id="close-room-modal" class="ghost-btn" type="button">取消</button>
+        </div>
+    </div>
+</div>
+
+<div id="profile-modal" class="modal hidden">
+    <div class="modal-content">
+        <h3>编辑个人资料</h3>
+        <label>昵称
+            <input type="text" id="profile-displayName">
+        </label>
+        <label>头像 URL
+            <div class="input-with-action">
+                <input type="text" id="profile-avatar" placeholder="可填写 URL 或右侧上传">
+                <button type="button" id="profile-avatar-upload" class="ghost-btn small">上传</button>
+            </div>
+            <input type="file" id="profile-avatar-file" class="hidden" accept="image/*">
+        </label>
+        <label>个性签名
+            <input type="text" id="profile-signature">
+        </label>
+        <div class="modal-actions">
+            <button id="profile-save" class="primary-btn" type="button">保存</button>
+            <button id="profile-cancel" class="ghost-btn" type="button">取消</button>
+        </div>
+    </div>
+</div>
+
+<div id="ai-clone-modal" class="modal hidden">
+    <div class="modal-content">
+        <h3>发布我的分身</h3>
+        <label>分身 ID（自动加前缀 ai_）
+            <div class="input-with-prefix">
+                <span class="prefix">ai_</span>
+                <input type="text" id="ai-clone-id" placeholder="如: helper01">
+            </div>
+        </label>
+        <label>分身昵称
+            <input type="text" id="ai-clone-name" placeholder="可选，默认使用 ID">
+        </label>
+        <label>头像 URL（可选）
+            <div class="input-with-action">
+                <input type="text" id="ai-clone-avatar" placeholder="可填写 URL 或右侧上传">
+                <button type="button" id="ai-clone-avatar-upload" class="ghost-btn small">上传</button>
+            </div>
+            <input type="file" id="ai-clone-avatar-file" class="hidden" accept="image/*">
+        </label>
+        <label>提示词（描述分身人设）
+            <textarea id="ai-clone-prompt" rows="3" placeholder="示例：你是一个乐于分享冷知识的AI同学，回复保持口语化，分段用&lt;spilit&gt;分隔"></textarea>
+            <div class="ai-clone-prompt-actions">
+                <button id="ai-clone-self-prompt" class="ghost-btn small" type="button">模仿自己</button>
+            </div>
+        </label>
+        <p id="ai-clone-hint" class="hint"></p>
+        <div class="modal-actions">
+            <button id="ai-clone-create" class="primary-btn" type="button">发布</button>
+            <button id="ai-clone-cancel" class="ghost-btn" type="button">取消</button>
+        </div>
+    </div>
+</div>
+
+<div id="view-profile-modal" class="modal hidden">
+    <div class="modal-content">
+        <h3 id="view-profile-name">用户详情</h3>
+        <img id="view-profile-avatar" class="avatar large" src="" alt="profile">
+        <p id="view-profile-username" class="muted"></p>
+        <p class="eyebrow">个性签名</p>
+        <p id="view-profile-signature" class="muted"></p>
+        <div class="modal-actions">
+            <button id="view-profile-moments" class="ghost-btn" type="button">TA 的朋友圈</button>
+            <button id="view-profile-close" class="primary-btn" type="button">关闭</button>
+        </div>
+    </div>
+</div>
+
+<!-- add -->
+<div id="manage-room-modal" class="modal hidden">
+    <div class="modal-content tall room-admin-modal">
+        <h3>群管理</h3>
+        <div class="room-admin-body">
+            <label class="room-admin-field">群名称
+                <input type="text" id="manage-room-name" placeholder="群名称">
+            </label>
+            <label class="room-admin-field">群简介
+                <textarea id="manage-room-desc" rows="3" placeholder="群介绍（可选）"></textarea>
+            </label>
+            <label class="room-admin-field">群头像 URL
+                <input type="text" id="manage-room-avatar" placeholder="https://">
+            </label>
+            <div class="room-admin-checkbox">
+                <span>允许搜索</span>
+                <input type="checkbox" id="manage-room-public" checked>
+            </div>
+            <div class="room-admin-section">
+                <div class="sub-section-header">
+                    <h5>群成员</h5>
+                </div>
+                <ul id="manage-room-members" class="room-admin-members"></ul>
+            </div>
+            <div class="room-admin-add">
+                <select id="manage-room-add-user" multiple size="5" class="room-admin-select">
+                    <option value="">从好友中选择</option>
+                </select>
+                <button id="manage-room-add-btn" class="ghost-btn" type="button">添加成员</button>
+            </div>
+            <div id="manage-room-hint" class="muted small"></div>
+            <div class="modal-actions room-admin-actions">
+                <button id="manage-room-save" class="primary-btn" type="button">保存资料</button>
+                <button id="manage-room-cancel" class="ghost-btn" type="button">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    if (window.lucide) {
+        lucide.createIcons();
+    }
+</script>
+<script src="app.js"></script>
+</body>
+<!-- 图片全屏预览遮罩层（默认隐藏） -->
+<div id="image-preview-modal" class="image-preview-modal">
+  <button id="close-preview" class="close-preview-btn">×</button>
+  <img id="preview-image" class="preview-image" src="" alt="全屏预览图">
+</div>
+
+</html>

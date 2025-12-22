@@ -1,0 +1,7 @@
+.gradle/
+.gradle-user/
+.vscode/
+bin/
+build/
+gradle/
+gradle-home/
