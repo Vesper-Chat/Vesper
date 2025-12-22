@@ -17,7 +17,7 @@ public final class ServerConfig {
     /** AI 助手头像 URL。 */
     public static final String AI_BOT_AVATAR = "https://2bpic.oss-cn-beijing.aliyuncs.com/2025/12/04/6930f7d6d5a18.jpg";
     /** 用户默认头像 URL。 */
-    public static final String DEFAULT_AVATAR = "https://2bpic.oss-cn-beijing.aliyuncs.com/2025/12/04/6930f7a2c12fc.png";
+    public static final String DEFAULT_AVATAR = "https://2bpic.oss-cn-beijing.aliyuncs.com/2025/12/22/69492724deefc.jpg";
     /** Lsky图床API。 */
     public static final String IMG_API_BASE = System.getenv().getOrDefault("IMG_API_BASE", "https://yourdomain/api/v1");  // 需要填入自己的图床api地址
     public static final String IMG_API_EMAIL = System.getenv().getOrDefault("IMG_API_EMAIL", "114514@onlyfans.com");  // 自己的图床账号
