@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vesper - 在线聊天室</title>
+    <title>在线聊天室</title>
     <link rel="stylesheet" href="styles.css">
     <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 <body>
 <div class="page-wrapper">
     <section id="login-container" class="panel auth-panel-container">
-        <div class="jelly-title" style="font-size:40px;">Vesper</div>
+        <div class="jelly-title" style="font-size:40px;">Vesper Chat</div>
         <!-- 左侧果冻区 -->
         <div id="welcome-panel" class="welcome-panel">
             <canvas id="jelly-canvas"></canvas>
@@ -29,9 +29,9 @@
         
         <section id="login-panel" class="login-panel">
             <div class="auth-header">
-                <p class="eyebrow">Vesper Chat</p>
-                <h1>捕捉思维的每一次共鸣</h1>
-                <p class="muted">虚实共生的沉浸式对话空间</p>
+                <p class="eyebrow">WebSocket Chat</p>
+                <h1>即刻开始探索⭐~</h1>
+                <p class="muted">轻量、实时的聊天体验</p>
             </div>
             <form id="login-form" class="card auth-card">
                 <label class="field">
@@ -138,8 +138,8 @@
                             <div class="search-row">
                                 <input type="text" id="friend-keyword" placeholder="搜索用户名或昵称">
                                 <button id="friend-search-btn" class="ghost-btn iconed" type="button">
-                                    <i data-lucide="search"></i>
-                                    <span>搜索</span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="search" class="lucide lucide-search"><path d="m21 21-4.34-4.34"></path><circle cx="11" cy="11" r="8"></circle></svg>
+                                    
                                 </button>
                             </div>
                             <ul id="friend-search-result" class="list muted"></ul>
@@ -176,8 +176,8 @@
                             <div class="search-row">
                                 <input type="text" id="room-search-keyword" placeholder="搜索群聊">
                                 <button id="room-search-btn" class="ghost-btn iconed" type="button">
-                                    <i data-lucide="search"></i>
-                                    <span>搜索</span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="search" class="lucide lucide-search"><path d="m21 21-4.34-4.34"></path><circle cx="11" cy="11" r="8"></circle></svg>
+                                    
                                 </button>
                             </div>
                             <ul id="room-search-result" class="list muted"></ul>

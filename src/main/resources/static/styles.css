@@ -33,6 +33,49 @@ body::after {
     display: none;
 }
 
+/* 1. 将图标容器由横向改为纵向 */
+.input-actions {
+    display: flex;
+    flex-direction: column; /* 核心修改：改为上下排列 */
+    gap: 4px;              /* 两个图标之间的垂直间距 */
+    align-self: center;    /* 让图标组在输入框内垂直居中 */
+    margin-right: 2px;     /* 与右侧输入区域保持微小距离 */
+}
+
+/* 2. 缩小 send-file-btn 和 emoji-btn 的尺寸 */
+#send-file-btn, 
+#emoji-btn,
+.input-actions .icon-btn {
+    width: 27px !important;  /* 显著缩小宽度 */
+    height: 27px !important; /* 显著缩小高度 */
+    min-width: 24px;
+    padding:  0px;
+    border-radius:10px;      /* 配合小尺寸调节圆角 */
+}
+
+/* 3. 同步缩小图标内部的 Lucide 符号 */
+.input-actions .icon-btn i,
+.input-actions .icon-btn svg {
+    width: 15px !important;
+    height: 15px !important;
+    opacity: 0.8;
+}
+
+/* 4. 优化 input-shell 布局，让输入框向左扩展 */
+.input-shell {
+    padding: 6px 16px 6px 10px !important; /* 减小左侧 padding (10px)，让图标贴边 */
+    gap: 8px;                              /* 减小图标组与输入框之间的空隙 */
+    align-items: center;                   /* 确保所有元素垂直居中对齐 */
+    border-radius: 20px;                   /* 稍微减小外框圆角，适配更紧凑的布局 */
+}
+
+/* 5. 确保输入框文字区域自动填满剩余空间 */
+#message-input {
+    flex: 1;
+    padding: 4px 14px;                        /* 减少内部补白 */
+    font-size: 14px;
+    min-height: 24px;                      /* 配合居中对齐 */
+}
 /* 非全屏状态限制收缩 */
 .page-wrapper {
     min-height: 100vh; /* 全屏时保持视口高度 */
@@ -1639,7 +1682,8 @@ textarea {
     flex-shrink: 0;
     flex-wrap: wrap;
     backdrop-filter: blur(8px);
-}
+} 
+
 .multi-select-bar {
     position: fixed;
     left: auto;
@@ -1807,22 +1851,17 @@ textarea {
     gap: 10px;
     align-items: flex-end;
     border: 1px solid #334155;
-    border-radius: 28px; 
+    border-radius: 22px; 
     background: #020617;
     padding: 10px 20px;
     box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-}
-
-.input-actions {
-    display: flex;
-    gap: 8px;
 }
 
 .input-shell textarea {
     border: none;
     background: transparent;
     resize: vertical;
-    min-height: 56px;
+    min-height: 60px !important;
     max-height: 180px;
     padding: 0;
 }
@@ -2573,10 +2612,6 @@ textarea {
 }
 
 
-
-
-/* --- 弹窗与通用深色滚动条美化 --- */
-
 /* 1. 针对弹窗容器(.modal-content) 和 内部成员列表(.room-admin-members) */
 .modal-content::-webkit-scrollbar,
 .room-admin-members::-webkit-scrollbar,
@@ -2721,11 +2756,6 @@ textarea {
     border-bottom: 1px solid var(--border);
 }
 
-/* 同时移除好友列表和房间列表最后一项的分隔线 */
-#friend-list li:last-child,
-#room-list li:last-child {
-    border-bottom: none !important;
-}
 
 /* 解决可能的父容器样式冲突 */
 #friend-list,
@@ -2851,8 +2881,9 @@ textarea {
 #room-search-btn {
     height: 32px; /* 与输入框高度一致 */
     padding: 0 12px; /* 调整按钮内边距，保持按钮紧凑 */
-    font-size: 13px; /* 同步缩小按钮文字 */
+    font-size: 10px; /* 同步缩小按钮文字 */
 }
+
 
 /* 好友/房间列表项点击及选中状态的圆角与发光效果 */
 #friend-list li:active,
