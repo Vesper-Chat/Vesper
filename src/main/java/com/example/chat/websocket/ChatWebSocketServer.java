@@ -938,7 +938,7 @@ public class ChatWebSocketServer extends WebSocketServer {
             // 通知操作者
             send(conn, "MESSAGE_RECALL_RESULT", Map.of("success", true, "roomId", roomId, "messageId", messageId, "byUserId", context.getUserId()));
             // 广播给房间其他成员
-            broadcastToRoom(roomId, Map.of("roomId", roomId, "messageId", messageId, "byUserId", context.getUserId()), Set.of(context.getUserId()), "MESSAGE_RECALLED");
+            broadcastToRoom(roomId, Map.of("roomId", roomId, "messageId", messageId, "byUserId", context.getUserId()), null, "MESSAGE_RECALLED");
         } catch (Exception e) {
             send(conn, "MESSAGE_RECALL_RESULT", Map.of("success", false, "errorMessage", e.getMessage()));
         }
